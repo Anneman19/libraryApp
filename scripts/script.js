@@ -11,12 +11,11 @@ function Book(title, author, year, id, read) {
 function addBookToLibrary(title, author, year, id, read) {
     const book = new Book(title, author, year, id, read);
     myLibrary.push(book);
-    showBook(title, author, year, read);
 }
 
 const newBook = document.querySelector("#addBookBtn");
 
-newBook.addEventListener("click", (event) => {
+newBook.addEventListener("click", () => {
     const addBookForm = document.querySelector(".addBookForm");
 
     newBook.style.display = "none";
@@ -24,6 +23,7 @@ newBook.addEventListener("click", (event) => {
 });
 
 const addBook = document.querySelector("#addBook");
+const booksContainer = document.querySelector(".booksContainer");
 
 addBook.addEventListener("click", (event) => {
     event.preventDefault();
@@ -33,16 +33,19 @@ addBook.addEventListener("click", (event) => {
     const read = document.querySelector("input[name='read']").checked;
     const id = crypto.randomUUID();
 
-    addBookToLibrary(title, author, year, id, read)
+    addBookToLibrary(title, author, year, id, read);
+
+    booksContainer.textContent = "";
+
+    showBook();
 });
 
-function showBook(title, author, year, read) {
-    const addedBook = document.createElement("div");
-    addedBook.classList.add("book-card");
-    addedBook.textContent = `${title} by ${author}. Year: ${year}. Read: ${read}.`;
-
-    const addedBooksContainer = document.querySelector(".book-cards");
-
-    addedBooksContainer.appendChild(addedBook);
+function showBook() {
+    myLibrary.forEach((book) => {
+        const addedBook = document.createElement("div");
+        addedBook.classList.add("book-card");
+        addedBook.textContent = `${book.title} by ${book.author}. Year: ${book.year}. Read: ${book.read}.`;
+    
+        booksContainer.appendChild(addedBook);
+    });
 }
-
